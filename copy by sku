@@ -1,0 +1,25 @@
+import shutil
+import glob
+import pandas as pd
+
+path_base = glob.glob('base_image/*')
+path_to = 'dest/'
+
+data = pd.read_excel('Book1.xlsx', sheet_name=0)
+images_name = data['SKU'].tolist()
+
+print(f"{len(path_base)}\timages in folder base")
+print(f"{len(images_name)}\tSKU list to copy")
+
+# Create a list of files that contain an image name
+files_to_copy = [file for file in path_base if any(image_name in file for image_name in images_name)]
+
+# Copy the files to the destination directory
+for file in files_to_copy:
+    shutil.copy(file, path_to)
+
+# Count the number of files copied
+count = len(files_to_copy)
+
+
+print(f"{count} files copied to {path_to}")
